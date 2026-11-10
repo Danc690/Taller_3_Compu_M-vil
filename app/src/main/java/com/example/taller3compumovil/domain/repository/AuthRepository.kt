@@ -11,5 +11,7 @@ interface AuthRepository {
 
     fun getCurrentUid(): String?
 
+    fun getCurrentEmail(): String?
+
     fun observeAuthState(): Flow<String?>
 }

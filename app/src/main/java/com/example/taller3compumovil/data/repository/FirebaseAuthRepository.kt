@@ -21,7 +21,7 @@ class FirebaseAuthRepository(
                 .awaitResult()
                 .user
                 ?.uid
-                ?: error("Firebase Authentication returned no user after registration")
+                ?: error("Firebase Authentication no devolvió un usuario después del registro.")
         }
 
     override suspend fun signIn(email: String, password: String): Result<String> =
@@ -30,7 +30,7 @@ class FirebaseAuthRepository(
                 .awaitResult()
                 .user
                 ?.uid
-                ?: error("Firebase Authentication returned no user after sign-in")
+                ?: error("Firebase Authentication no devolvió un usuario después del inicio de sesión.")
         }
 
     override suspend fun signOut() {
@@ -38,6 +38,8 @@ class FirebaseAuthRepository(
     }
 
     override fun getCurrentUid(): String? = auth.currentUser?.uid
+
+    override fun getCurrentEmail(): String? = auth.currentUser?.email
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun observeAuthState(): Flow<String?> = callbackFlow {
