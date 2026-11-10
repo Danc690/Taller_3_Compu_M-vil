@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "650313040312",
+    "project_id": "taller3compumovil-bfa70",
+    "storage_bucket": "taller3compumovil-bfa70.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650313040312:android:cf77889e53bd7bd72f0f4d",
+        "android_client_info": {
+          "package_name": "com.example.taller3compumovil"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmlehUExXPDvKlc0f4rfzpvO0jLCoLrVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
