@@ -1,6 +1,6 @@
-package com.example.taller3compumovil.domain.repository
+package com.example.taller3compumovil.data.repository
 
-import com.example.taller3compumovil.data.model.Presence
+import com.example.taller3compumovil.model.Presence
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.flow.Flow
 

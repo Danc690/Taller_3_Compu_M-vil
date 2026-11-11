@@ -1,7 +1,6 @@
 package com.example.taller3compumovil.data.repository
 
-import com.example.taller3compumovil.data.model.UserProfile
-import com.example.taller3compumovil.domain.repository.UserRepository
+import com.example.taller3compumovil.model.UserProfile
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot

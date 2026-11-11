@@ -1,4 +1,4 @@
-package com.example.taller3compumovil.data.model
+package com.example.taller3compumovil.model
 
 import com.google.firebase.Timestamp
 

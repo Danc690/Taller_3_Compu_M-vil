@@ -1,6 +1,6 @@
-package com.example.taller3compumovil.domain.repository
+package com.example.taller3compumovil.data.repository
 
-import com.example.taller3compumovil.data.model.UserProfile
+import com.example.taller3compumovil.model.UserProfile
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {

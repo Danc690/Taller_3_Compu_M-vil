@@ -1,6 +1,5 @@
 package com.example.taller3compumovil.data.repository
 
-import com.example.taller3compumovil.domain.repository.AuthRepository
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth

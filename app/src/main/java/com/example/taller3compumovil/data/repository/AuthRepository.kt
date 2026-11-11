@@ -1,4 +1,4 @@
-package com.example.taller3compumovil.domain.repository
+package com.example.taller3compumovil.data.repository
 
 import kotlinx.coroutines.flow.Flow
 

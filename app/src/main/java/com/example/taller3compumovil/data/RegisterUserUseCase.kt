@@ -1,9 +1,9 @@
-package com.example.taller3compumovil.domain.usecase
+package com.example.taller3compumovil.data
 
-import com.example.taller3compumovil.data.model.Presence
-import com.example.taller3compumovil.data.model.UserProfile
-import com.example.taller3compumovil.domain.repository.AccountProvisioningRepository
-import com.example.taller3compumovil.domain.repository.AuthRepository
+import com.example.taller3compumovil.data.repository.AccountProvisioningRepository
+import com.example.taller3compumovil.data.repository.AuthRepository
+import com.example.taller3compumovil.model.Presence
+import com.example.taller3compumovil.model.UserProfile
 import kotlinx.coroutines.CancellationException
 
 class RegisterUserUseCase(

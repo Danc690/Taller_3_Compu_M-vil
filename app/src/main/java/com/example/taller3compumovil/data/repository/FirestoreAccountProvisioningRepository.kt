@@ -1,9 +1,7 @@
 package com.example.taller3compumovil.data.repository
 
-import com.example.taller3compumovil.data.model.Presence
-import com.example.taller3compumovil.data.model.UserProfile
-import com.example.taller3compumovil.domain.exception.ProvisioningConflictException
-import com.example.taller3compumovil.domain.repository.AccountProvisioningRepository
+import com.example.taller3compumovil.model.Presence
+import com.example.taller3compumovil.model.UserProfile
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
@@ -20,7 +18,7 @@ class FirestoreAccountProvisioningRepository(
         presence: Presence
     ): Result<Unit> = try {
         if (profile.uid != presence.uid) {
-            throw ProvisioningConflictException(
+            throw IllegalStateException(
                 "Los UID del perfil privado y de la presencia no coinciden."
             )
         }
@@ -54,7 +52,7 @@ class FirestoreAccountProvisioningRepository(
 
     private fun validateUid(snapshot: DocumentSnapshot, expectedUid: String, path: String) {
         if (snapshot.exists() && snapshot.getString(FIELD_UID) != expectedUid) {
-            throw ProvisioningConflictException(
+            throw IllegalStateException(
                 "El UID guardado en '$path' no coincide con el UID esperado."
             )
         }
