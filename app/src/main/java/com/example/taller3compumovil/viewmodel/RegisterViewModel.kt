@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.taller3compumovil.data.RegisterUserUseCase
 import com.example.taller3compumovil.data.repository.AuthRepository
 import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.CancellationException
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await // 🔥 IMPORTANTE: Import para usar .await()
 
 data class RegisterUiState(
     val isLoading: Boolean = false,
@@ -53,20 +55,22 @@ class RegisterViewModel(
             return
         }
 
-        if (authRepository.getCurrentUid() != null) {
-            if (authRepository.getCurrentEmail().equals(pendingEmail, ignoreCase = true)) {
-                retryProvisioning()
-            } else {
-                _uiState.value = RegisterUiState(
-                    errorMessage = "Hay otra cuenta activa. Vuelve al inicio de sesión antes de registrar una cuenta diferente."
-                )
-            }
-            return
-        }
-
         _uiState.value = RegisterUiState(isLoading = true)
+
         viewModelScope.launch {
             try {
+                // 🛠️ MANEJO DE SESIÓN ACTIVA DENTRO DE LA CORRUTINA
+                if (authRepository.getCurrentUid() != null) {
+                    if (authRepository.getCurrentEmail().equals(pendingEmail, ignoreCase = true)) {
+                        // Si es el mismo correo, solo reintentamos completar el perfil
+                        retryProvisioning()
+                        return@launch
+                    } else {
+                        // Si es otro correo, cerramos la sesión automáticamente
+                        authRepository.signOut()
+                    }
+                }
+
                 registerUserUseCase(
                     name = pendingName,
                     email = pendingEmail,
@@ -74,6 +78,10 @@ class RegisterViewModel(
                     phone = pendingPhone
                 ).fold(
                     onSuccess = {
+                        // 🔥 FORZAR REFRESCO DEL TOKEN ANTES DE ESCRIBIR EN FIRESTORE
+                        // Esto soluciona el error de "no hay permisos para completar el perfil"
+                        FirebaseAuth.getInstance().currentUser?.getIdToken(true)?.await()
+
                         _uiState.value = RegisterUiState(isRegistrationComplete = true)
                     },
                     onFailure = { exception ->
@@ -104,6 +112,9 @@ class RegisterViewModel(
         )
         viewModelScope.launch {
             try {
+                // 🔥 FORZAR REFRESCO DEL TOKEN TAMBIÉN EN EL REINTENTO
+                FirebaseAuth.getInstance().currentUser?.getIdToken(true)?.await()
+
                 registerUserUseCase.retryProvisioning(pendingName, pendingPhone).fold(
                     onSuccess = {
                         _uiState.value = RegisterUiState(isRegistrationComplete = true)
@@ -122,7 +133,7 @@ class RegisterViewModel(
 
     private fun hasMatchingSession(): Boolean =
         authRepository.getCurrentUid() != null &&
-            authRepository.getCurrentEmail().equals(pendingEmail, ignoreCase = true)
+                authRepository.getCurrentEmail().equals(pendingEmail, ignoreCase = true)
 
     private fun showError(exception: Throwable, canRetry: Boolean) {
         _uiState.value = RegisterUiState(
