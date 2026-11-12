@@ -2,15 +2,21 @@ package com.example.taller3compumovil.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -27,7 +33,8 @@ import com.example.taller3compumovil.viewmodel.ProfileViewModel
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel,
-    onUnauthenticated: () -> Unit
+    onUnauthenticated: () -> Unit,
+    onBackToMap: () -> Unit // 👈 Nuevo parámetro para volver al mapa
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -46,7 +53,21 @@ fun ProfileScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Mi perfil", style = MaterialTheme.typography.headlineMedium)
+        // Barra superior con botón para volver
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBackToMap) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Volver al mapa"
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Mi perfil", style = MaterialTheme.typography.headlineMedium)
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
 
         if (uiState.isLoading && uiState.profile == null) {
